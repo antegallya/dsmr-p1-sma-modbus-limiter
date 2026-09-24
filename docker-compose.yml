@@ -1,0 +1,18 @@
+services:
+  dsmr-sma-limiter:
+    build: .
+    image: dsmr-sma-limiter:latest
+    pull_policy: build
+    restart: unless-stopped
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "/dsmr-sma-limiter", "--healthcheck"]
+      interval: 15s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    # Default bridge networking: unicast TCP to the E20 and the inverter,
+    # no host networking, no multicast.
+    ports:
+      - "8080:8080"
